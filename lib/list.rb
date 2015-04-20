@@ -11,15 +11,15 @@ class List
     end
   end
 
-  def add(input)
+  def add(data)
     current= nil
     if head.nil?
-      self.head = Node.new input
+      self.head = Node.new data
     else
       self.each_node do |node|
         current = node if node.link.nil?
       end
-      current.link = Node.new input
+      current.link = Node.new data
     end
     self
   end
@@ -51,11 +51,11 @@ class List
     data
   end
 
-  def index(input)
+  def index(number)
     count = 0
     current = nil
     self.each_node do |node|
-      current = node if count == i
+      current = node if count == number
       count += 1
     end
     current.data rescue nil
@@ -73,16 +73,56 @@ class List
     data
   end
 
-  def push(data)
-    self.add(self.tail)
+  def any?(data)
+    answer = false
     self.each_node do |node|
-      node.link.data = node.data
+      answer = true if node.data == data
     end
-    self.head = Node.new data
+    answer
   end
 
+  def push(data)
+    self.add(self.tail)
+    current = self.count - 2
+    while current >= 0
+      node_index(current).data = node_index(current - 1).data
+      current -= 1
+    end
+    rescue NoMethodError
+    self.head.data = data
+  end
 
+  def insert(data, index)
+    self.add(self.tail)
+    current = self.count - 2
+    while current >= index
+      node_index(current).data = node_index(current - 1).data
+      current -= 1
+    end
+    node_index(index).data = data
+  end
 
+  def remove(index)
+    data = node_index(index).data
+    current = index
+    until current == self.count
+      node_index(current).data = node_index(current + 1).data
+      current += 1
+    end
+    rescue NoMethodError
+    self.pop
+    data
+  end
+
+  private
+  def node_index(number)
+    count = 0
+    current = nil
+    self.each_node do |node|
+      current = node if count == number
+      count += 1
+    end
+    current rescue nil
+  end
   binding.pry
 end
-
