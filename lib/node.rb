@@ -1,9 +1,7 @@
 class Node
-  attr_reader :data
-  attr_accessor :link
+  attr_accessor :link, :data
 
-  def initialize(data = nil)
+  def initialize data = nil
     @data = data
   end
-
 end
